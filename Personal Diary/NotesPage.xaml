@@ -3,67 +3,228 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Title="NotesPage" Height="450" Width="800">
 
-    <Grid>
+    <Page.Resources>
+        <!-- Улучшенная цветовая схема с большим контрастом -->
+        <SolidColorBrush x:Key="PrimaryBackground" Color="#0D1117"/>
+        <SolidColorBrush x:Key="SecondaryBackground" Color="#21262D"/>
+        <SolidColorBrush x:Key="SurfaceBackground" Color="#30363D"/>
+        <SolidColorBrush x:Key="PrimaryText" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="SecondaryText" Color="#B0B3B8"/>
+        <SolidColorBrush x:Key="AccentColor" Color="#4CAF50"/>
+        <SolidColorBrush x:Key="AccentHover" Color="#66BB6A"/>
+        <SolidColorBrush x:Key="SelectionColor" Color="#3366CC"/>
+        <SolidColorBrush x:Key="SelectionHover" Color="#4A90E2"/>
+
+        <!-- Стиль для средних кнопок (Новая/Обновить) -->
+        <Style x:Key="MediumModernButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource SurfaceBackground}"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryText}"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="6,0"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Border" 
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="15"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource AccentHover}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource AccentColor}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль для кнопок действий (Создать/Удалить) -->
+        <Style x:Key="ActionButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource SurfaceBackground}"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryText}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="14,10"/>
+            <Setter Property="Margin" Value="4,0"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Border" 
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="12"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource AccentHover}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource AccentColor}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль для элементов списка -->
+        <Style x:Key="ModernListBoxItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="Margin" Value="0,2"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryText}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="Bd" 
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="10"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{StaticResource SelectionColor}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{StaticResource SelectionHover}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- стиль для ListBox -->
+        <Style x:Key="ModernListBoxStyle" TargetType="ListBox">
+            <Setter Property="Background" Value="{StaticResource SecondaryBackground}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBox">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="12"
+                                BorderBrush="{StaticResource SecondaryText}"
+                                BorderThickness="1">
+                            <ScrollViewer Margin="4,4,4,4">
+                                <ItemsPresenter/>
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль для текстовых полей -->
+        <Style x:Key="ModernTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="{StaticResource SecondaryBackground}"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryText}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="VerticalContentAlignment" Value="Top"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="8"
+                                BorderThickness="1"
+                                BorderBrush="{StaticResource SecondaryText}">
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
+    <Grid Background="{StaticResource PrimaryBackground}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="260"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <!-- Левая панель: Список заметок -->
-        <StackPanel Grid.Column="0" Margin="5">
-            <!-- Заголовок -->
-            <TextBlock Text="Коллекция notes" 
-                       FontWeight="Bold" FontSize="14"
-                       Margin="0,0,0,10" HorizontalAlignment="Center"/>
+        <Border Grid.Column="0" Background="{StaticResource SecondaryBackground}" 
+                CornerRadius="16" Margin="12,12,8,12" Padding="16">
+            <StackPanel>
+                <!-- Заголовок -->
+                <TextBlock Text="Коллекция Notes" 
+                           FontWeight="Bold" FontSize="18"
+                           Foreground="{StaticResource PrimaryText}"
+                           Margin="0,0,0,16" HorizontalAlignment="Center"/>
 
-            <!-- Кнопки управления заметками -->
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                <Button x:Name="btnNew" Content="Новая" Width="80" Height="30" 
-                        Margin="0,0,5,0" Click="BtnNew_Click"/>
-                <Button x:Name="btnRefresh" Content="⟳" Width="30" Height="30" 
-                        Click="BtnRefresh_Click" ToolTip="Обновить список"/>
+                <!-- Кнопки управления (средний размер) -->
+                <DockPanel HorizontalAlignment="Center" Margin="0,0,0,16">
+                    <Button x:Name="btnNew" Content="Новая" Width="60"
+                            Style="{StaticResource MediumModernButtonStyle}"
+                            Click="BtnNew_Click"/>
+                    <Button x:Name="btnRefresh" Content="Обновить" Width="80"
+                            Style="{StaticResource MediumModernButtonStyle}"
+                            Click="BtnRefresh_Click" ToolTip="Обновить список"/>
+                </DockPanel>
+
+                <!-- Список заметок -->
+                <TextBlock Text="📋 Заметки:" 
+                           FontWeight="SemiBold" FontSize="13"
+                           Foreground="{StaticResource SecondaryText}"
+                           Margin="0,0,0,12"/>
+                <ListBox x:Name="lstEntries" 
+                         Height="262" 
+                         SelectionChanged="LstEntries_SelectionChanged"
+                         Style="{StaticResource ModernListBoxStyle}"
+                         ItemContainerStyle="{StaticResource ModernListBoxItemStyle}"/>
             </StackPanel>
-
-            <!-- Список заметок -->
-            <TextBlock Text="Заметки:" Margin="0,0,0,5"/>
-            <ListBox x:Name="lstEntries" Height="300" 
-                     SelectionChanged="LstEntries_SelectionChanged">
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="Padding" Value="5"/>
-                        <Setter Property="Margin" Value="0,0,0,2"/>
-                        <Setter Property="Background" Value="Transparent"/>
-                        <Style.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="#E3F2FD"/>
-                                <Setter Property="FontWeight" Value="Bold"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-            </ListBox>
-        </StackPanel>
+        </Border>
 
         <!-- Правая панель: Редактирование -->
-        <StackPanel Grid.Column="1" Margin="5">
-            <!-- Название заметки -->
-            <TextBlock Text="Название заметки:" Margin="0,0,0,5"/>
-            <TextBox x:Name="txtNoteName" Height="30" Margin="0,0,0,10"
-                     FontSize="14"/>
+        <Border Grid.Column="1" Background="{StaticResource SurfaceBackground}" 
+                CornerRadius="16" Margin="8,12,12,12" Padding="20">
+            <StackPanel>
+                <!-- Название заметки -->
+                <TextBlock Text="📌 Название заметки:" 
+                           FontWeight="SemiBold" FontSize="13"
+                           Foreground="{StaticResource SecondaryText}"
+                           Margin="0,0,0,8"/>
+                <TextBox x:Name="txtNoteName" Height="44"
+                         Style="{StaticResource ModernTextBoxStyle}"
+                         Margin="0,0,0,16"/>
 
-            <!-- Текст заметки -->
-            <TextBlock Text="Текст заметки:" Margin="0,0,0,5"/>
-            <TextBox x:Name="txtMessage" Height="300" 
-                     AcceptsReturn="True" TextWrapping="Wrap" 
-                     VerticalScrollBarVisibility="Auto" FontSize="14"/>
+                <!-- Текст заметки -->
+                <TextBlock Text="✍️ Текст заметки:" 
+                           FontWeight="SemiBold" FontSize="13"
+                           Foreground="{StaticResource SecondaryText}"
+                           Margin="0,0,0,8"/>
+                <TextBox x:Name="txtMessage" Height="225"
+                         AcceptsReturn="True" TextWrapping="Wrap" 
+                         VerticalScrollBarVisibility="Auto"
+                         Style="{StaticResource ModernTextBoxStyle}"
+                         Margin="0,0,0,16"/>
 
-            <!-- Кнопки действий -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
-                <Button x:Name="btnSave" Content="Создать" Width="80" Height="30" 
-                        Margin="0,0,5,0" Click="BtnSave_Click"/>
-                <Button x:Name="btnDelete" Content="Удалить" Width="80" Height="30" 
-                        IsEnabled="False" Click="BtnDelete_Click"/>
+                <!-- Кнопки действий -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button x:Name="btnSave" Content="Создать" Width="70"
+                            Style="{StaticResource MediumModernButtonStyle}"
+                            Click="BtnSave_Click"/>
+                    <Button x:Name="btnDelete" Content="Удалить" Width="70"
+                            Style="{StaticResource MediumModernButtonStyle}"
+                            IsEnabled="False" Click="BtnDelete_Click"/>
+                </StackPanel>
             </StackPanel>
-        </StackPanel>
+        </Border>
     </Grid>
 </Page>
