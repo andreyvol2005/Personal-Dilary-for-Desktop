@@ -1,7 +1,7 @@
 ﻿<Page x:Class="Personal_Diary.Pages.DatesPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      Title="DatesPage" Height="450" Width="800">
+      Title="DatesPage">
 
     <Page.Resources>
         <!-- Улучшенная цветовая схема с большим контрастом -->
