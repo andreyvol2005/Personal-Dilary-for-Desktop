@@ -1,4 +1,4 @@
-# 📱 Personal Diary - WPF Desktop Application
+<h1 align="center">Personal Diary - WPF Desktop Application</h1>
 <img width="1109" height="741" alt="{CEEA006F-2A4F-4B36-9E8C-321F8FFC5F0E}" src="https://github.com/user-attachments/assets/8b7f09b1-0929-4e8d-b933-1ec79523148c" />
 
 <div align="center">
